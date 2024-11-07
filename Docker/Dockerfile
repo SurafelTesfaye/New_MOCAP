@@ -1,7 +1,10 @@
+# Use ROS base image
 FROM ros:noetic-ros-base-focal
 
-RUN apt update && \
-    apt install -y ros-noetic-mavros ros-noetic-mavros-extras && \
-    rosrun mavros install_geographiclib_datasets.sh
+# Install MAVROS packages
+RUN apt-get update && apt-get install -y \
+    ros-noetic-mavros \
+    ros-noetic-mavros-extras
 
-CMD ["bash"]
+# Source the ROS setup script and then run the geographiclib installer
+RUN /bin/bash -c "source /opt/ros/noetic/setup.bash && rosrun mavros install_geographiclib_datasets.sh"
